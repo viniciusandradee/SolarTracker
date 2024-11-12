@@ -87,7 +87,7 @@ const Login = () => {
                     <View style={styles.inputWrapperImage}>
                         <TextInput
                             style={styles.input}
-                            placeholder="Senha"
+                            placeholder="Password"
                             placeholderTextColor={'#669BBC'}
                             value={password}
                             onChangeText={setPassword}

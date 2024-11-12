@@ -27,6 +27,19 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
         firebaseAuth.signInWithEmailAndPassword(auth, email, password);
     };
 
+    const registerWithEmail = async (email: string, password: string) => {
+        try {
+            const userCredential = await firebaseAuth.createUserWithEmailAndPassword(auth, email, password);
+            setUser(userCredential.user);
+            await addDoc(collection(database, "users"), {
+                uid: userCredential.user.uid,
+                email: userCredential.user.email,
+            });
+        } catch (error) {
+            console.error("Erro ao registrar com e-mail e senha:", error);
+        }
+    };
+
     const signOut = async () => {
         await firebaseAuth.signOut(auth);
     };
@@ -52,7 +65,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{authentication, signOut, signInWithGoogle }}>
+        <AuthContext.Provider value={{authentication, registerWithEmail, signOut, signInWithGoogle }}>
             {children}
         </AuthContext.Provider>
     );
