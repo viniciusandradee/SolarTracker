@@ -5,6 +5,7 @@ import { auth } from '../../../firebaseConfig';
 import * as Google from "expo-auth-session/providers/google";
 
 import styles from "./style"
+import colors from '@/styles/colors';
 
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigation } from '@/types';
@@ -74,7 +75,7 @@ const Login = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Email"
-                            placeholderTextColor={'#669BBC'}
+                            placeholderTextColor={colors.tertiary}
                             value={email}
                             onChangeText={setEmail}
                             keyboardType="email-address"
@@ -86,7 +87,7 @@ const Login = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Password"
-                            placeholderTextColor={'#669BBC'}
+                            placeholderTextColor={colors.tertiary}
                             value={password}
                             onChangeText={setPassword}
                             secureTextEntry={!showPassword}

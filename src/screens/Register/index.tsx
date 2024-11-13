@@ -6,6 +6,7 @@ import { auth } from '../../../firebaseConfig';
 import * as Google from "expo-auth-session/providers/google";
 
 import styles from "./style"
+import colors from '@/styles/colors';
 
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigation } from '@/types';
@@ -79,7 +80,7 @@ const Register = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Email"
-                            placeholderTextColor={'#669BBC'}
+                            placeholderTextColor={colors.tertiary}
                             value={email}
                             onChangeText={setEmail}
                             keyboardType="email-address"
@@ -91,7 +92,7 @@ const Register = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Password"
-                            placeholderTextColor={'#669BBC'}
+                            placeholderTextColor={colors.tertiary}
                             value={password}
                             onChangeText={setPassword}
                             secureTextEntry={!showPassword}
@@ -108,7 +109,7 @@ const Register = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Confirm Password"
-                            placeholderTextColor={'#669BBC'}
+                            placeholderTextColor={colors.tertiary}
                             value={confirmPassword}
                             onChangeText={setConfirmPassword}
                             secureTextEntry={!showConfirmPassword}
@@ -138,8 +139,8 @@ const Register = () => {
 
             <View style={styles.footer}>
                 <Text style={styles.textGoToLogin}>Already have an account?</Text>
-                <TouchableOpacity style={styles.buttonGoToLogin}>
-                    <Text style={styles.buttonTextGoToLogin} onPress={goToLogin}>Go to Login</Text>
+                <TouchableOpacity style={styles.buttonGoToLogin} onPress={goToLogin}>
+                    <Text style={styles.buttonTextGoToLogin}>Go to Login</Text>
                 </TouchableOpacity>
             </View>
 

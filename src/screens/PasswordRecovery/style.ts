@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import colors from '@/styles/colors';
 
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         minHeight: '100%',
-        backgroundColor: '#003049'
+        backgroundColor: colors.primary
     },
 
     // HEADER
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 36,
-        color: '#fff',
+        color: colors.quinary,
         fontFamily: 'OdorMeanCheyRegular',
 
     },
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         backgroundColor: '#F4F4F4',
-        color: '#669BBC',
+        color: colors.quinary,
         fontSize: 16,
         paddingLeft: 20,
         borderRadius: 8,
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     buttonConfirm: {
         width: '50%',
         height: 30,
-        backgroundColor: '#669BBC',
+        backgroundColor: colors.secondary,
         borderRadius: 6,
         marginTop: 10,
         justifyContent: 'center',
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     },
 
     buttonConfirmText: {
-        color: '#FFF',
+        color: colors.quinary,
         fontWeight: 'bold',
         fontSize: 14,
 
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
 
     buttonGoBackLogin: {
         borderWidth: 1,
-        borderColor: '#669BBC',
+        borderColor: colors.tertiary,
         borderRadius: 6,
         height: 30,
         width: '40%',
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     },
 
     buttonTextGoBackLogin: {
-        color: '#669BBC',
+        color: colors.tertiary,
         fontSize: 12,
     }
 

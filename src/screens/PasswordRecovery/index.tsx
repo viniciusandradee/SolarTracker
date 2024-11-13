@@ -5,6 +5,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '../../../firebaseConfig';
 
 import styles from "./style";
+import colors from '@/styles/colors';
 
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigation } from '@/types';
@@ -47,7 +48,7 @@ const PasswordRecovery = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Email"
-                            placeholderTextColor={'#669BBC'}
+                            placeholderTextColor={colors.tertiary}
                             value={email}
                             onChangeText={setEmail}
                             keyboardType="email-address"

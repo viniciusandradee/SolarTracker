@@ -1,15 +1,12 @@
 import { StyleSheet } from 'react-native';
+import colors from '@/styles/colors';
 
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         minHeight: '100%',
-        backgroundColor: '#003049'
+        backgroundColor: colors.primary
     },
-    //container: {
-    //    flex: 1,
-    //    width: '100%',
-    //},
 
     // HEADER
 
@@ -26,13 +23,10 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 36,
-        color: '#fff',
+        color: colors.quinary,
         fontFamily: 'OdorMeanCheyRegular',
 
     },
-
-
-    // MAIN
 
     // MAIN
     main: {
@@ -51,7 +45,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '70%',
         alignItems: 'center',
-        backgroundColor: '#F4F4F4',
+        backgroundColor:  colors.quinary,
         borderRadius: 8,
         paddingRight: 10,
         height: 40,
@@ -59,8 +53,8 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         height: 40,
-        backgroundColor: '#F4F4F4',
-        color: '#669BBC',
+        backgroundColor: colors.quinary,
+        color: colors.black,
         fontSize: 16,
         paddingLeft: 20,
         borderRadius: 8,
@@ -68,7 +62,7 @@ const styles = StyleSheet.create({
     inputIcon: {
         width: 20,
         height: 20,
-        tintColor: '#669BBC',
+        tintColor: colors.tertiary,
     },
 
     passwordContainer: {
@@ -77,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
     passwordText: {
-        color: '#669BBC',
+        color: colors.tertiary,
         fontSize: 12,
         textAlign: 'right',
     },
@@ -89,7 +83,7 @@ const styles = StyleSheet.create({
     buttonLogin: {
         width: '50%',
         height: 30,
-        backgroundColor: '#669BBC',
+        backgroundColor: colors.secondary,
         borderRadius: 6,
         marginTop: 10,
         justifyContent: 'center',
@@ -97,7 +91,7 @@ const styles = StyleSheet.create({
     },
 
     buttonLoginText: {
-        color: '#FFF',
+        color: colors.quinary,
         fontWeight: 'bold',
         fontSize: 14,
 
@@ -114,7 +108,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
         borderWidth: 1,
-        borderColor: '#669BBC',
+        borderColor: colors.tertiary,
         borderRadius: 4,
 
         backgroundColor: 'transparent',
@@ -127,11 +121,7 @@ const styles = StyleSheet.create({
     },
 
     googleText: {
-        color: '#669BBC',
-    },
-
-    buttonHovered: {
-        backgroundColor: '#000',
+        color: colors.tertiary,
     },
 
 
@@ -146,14 +136,14 @@ const styles = StyleSheet.create({
     },
 
     textCreateAccount: {
-        color: '#669BBC',
+        color: colors.tertiary,
         fontSize: 12,
         marginBottom: 10,
     },
 
     buttonCreateAccount: {
         borderWidth: 1,
-        borderColor: '#669BBC',
+        borderColor: colors.tertiary,
         borderRadius: 6,
         height: 30,
         width: '40%',
@@ -162,7 +152,7 @@ const styles = StyleSheet.create({
     },
 
     buttonTextCreateAccount: {
-        color: '#669BBC',
+        color: colors.tertiary,
         fontSize: 12,
     }
 
