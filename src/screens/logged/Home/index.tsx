@@ -11,9 +11,6 @@ const Home = () => {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <View style={styles.header}>
-                <Image source={require('../../../../assets/Images/SolarTrackerTitleLogo.png')} style={styles.titleLogo} />
-            </View>
 
             <View style={styles.main}>
                 <Text style={styles.textEnergy}>Add your home and monitor your energy</Text>

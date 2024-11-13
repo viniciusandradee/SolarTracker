@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert, ScrollView, TextInput } from 'react-native';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from '../../../../firebaseConfig';
@@ -9,9 +9,14 @@ import colors from '@/styles/colors';
 
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigation } from '@/types';
+import { AuthContext } from '@/context/AuthContext';
+import { useGoogleAuth } from '@/utils/constant';
 
 
 const Login = () => {
+    const { authentication, signInWithGoogle } = useContext(AuthContext);
+    const { request, response, promptAsync } = useGoogleAuth();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -21,37 +26,29 @@ const Login = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    
+  const doAuth = async () => {
+    if (!email || !password) {
+      Alert.alert("Alerta", "Preencha todos os campos");
+      return;
+    }
+    try {
+      await authentication(email, password);
+    } catch (error: any) {
+      const errorMessage = error.message || "Algo deu errado. Tente novamente.";
+      Alert.alert("Erro", errorMessage);
+    }
+  };
 
-    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-        clientId: "473468402381-4u08vs09oq8cqvfq4tbaa70pf41lqgeg.apps.googleusercontent.com",
-    });
-
-    const doAuth = async () => {
-        if (!email || !password) {
-            Alert.alert("Alerta", "Preencha todos os campos");
-            return;
+  const signInWithGoogleHandler = async () => {
+    try {
+        if (request) {
+            await promptAsync();
         }
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            Alert.alert("Sucesso", "Login realizado com sucesso");
-        } catch (error: any) {
-            const errorMessage = error.message || "Algo de errado não está certo";
-            Alert.alert("Erro", errorMessage);
-        }
-    };
-
-    const signInWithGoogle = async () => {
-        try {
-            const result = await promptAsync();
-            if (result.type === "success" && result.authentication?.idToken) {
-                const credential = GoogleAuthProvider.credential(result.authentication.idToken);
-                await signInWithCredential(auth, credential);
-                Alert.alert("Sucesso", "Login com Google realizado com sucesso");
-            }
-        } catch (error) {
-            Alert.alert("Erro", "Erro ao autenticar com o Google");
-        }
-    };
+    } catch (error) {
+        Alert.alert("Erro", "Erro ao autenticar com o Google");
+    }
+};
 
     const goToPasswordRecovery = () => {
         navigation.navigate("PasswordRecovery");
@@ -111,10 +108,9 @@ const Login = () => {
                 
                 <TouchableOpacity
                     style={styles.googleButton}
-
-                    onPress={signInWithGoogle}>
+                    onPress={signInWithGoogleHandler}>
                     <Image source={require('@/../assets/Images/GoogleLogo.png')} style={styles.logoGoogle} />
-                    <Text style={styles.googleText}>Register with Google</Text>
+                    <Text style={styles.googleText}>Login with Google</Text>
                 </TouchableOpacity>
                 </View>
             </View>

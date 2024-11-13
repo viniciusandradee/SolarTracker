@@ -10,13 +10,11 @@ const Stack = createStackNavigator<AuthStack>();
 
 const AuthNavigator = () => {
   return (
-    <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="PasswordRecovery" component={PasswordRecoveryScreen} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 
