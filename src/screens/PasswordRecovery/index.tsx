@@ -6,14 +6,14 @@ import { auth } from '../../../firebaseConfig';
 
 import styles from "./style";
 
-//import { useNavigation } from '@react-navigation/native';
-//import { AuthNavigation } from '@/Types/navigation';
+import { useNavigation } from '@react-navigation/native';
+import { AuthNavigation } from '@/types';
 
 
 const PasswordRecovery = () => {
     const [email, setEmail] = useState("");
 
-    //const navigation = useNavigation<AuthNavigation>();
+    const navigation = useNavigation<AuthNavigation>();
 
     const handlePasswordReset = async () => {
         if (!email) {
@@ -28,9 +28,9 @@ const PasswordRecovery = () => {
         }
     };
 
-    //const goToLogin = () => {
-    //    navigation.navigate("Login");
-    //};
+    const goToLogin = () => {
+        navigation.navigate("Login");
+    };
 
 
     return (
@@ -64,8 +64,8 @@ const PasswordRecovery = () => {
             </View>
 
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.buttonGoBackLogin} 
-                //onPress={goToLogin}
+                <TouchableOpacity style={styles.buttonGoBackLogin}
+                onPress={goToLogin}
                 >
                     <Text style={styles.buttonTextGoBackLogin}>Go back to Login</Text>
                 </TouchableOpacity>

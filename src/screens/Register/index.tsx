@@ -7,6 +7,8 @@ import * as Google from "expo-auth-session/providers/google";
 
 import styles from "./style"
 
+import { useNavigation } from '@react-navigation/native';
+import { AuthNavigation } from '@/types';
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -14,6 +16,8 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const navigation = useNavigation<AuthNavigation>();
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         clientId: "473468402381-4u08vs09oq8cqvfq4tbaa70pf41lqgeg.apps.googleusercontent.com",
@@ -56,6 +60,10 @@ const Register = () => {
         }
     };
 
+
+    const goToLogin = () => {
+        navigation.navigate("Login");
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -131,7 +139,7 @@ const Register = () => {
             <View style={styles.footer}>
                 <Text style={styles.textGoToLogin}>Already have an account?</Text>
                 <TouchableOpacity style={styles.buttonGoToLogin}>
-                    <Text style={styles.buttonTextGoToLogin}>Go to Login</Text>
+                    <Text style={styles.buttonTextGoToLogin} onPress={goToLogin}>Go to Login</Text>
                 </TouchableOpacity>
             </View>
 

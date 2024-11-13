@@ -2,19 +2,14 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { FontProvider } from '@/context/FontContext';  // Ajuste o caminho conforme necessário
-
-//import { NavigationContainer } from '@react-navigation/native';
-//import { AuthProvider } from '@/Context/AuthContext';
-//import AppNavigator from '@/Navigation/AppNavigator';
-
-import Login from '@/screens/Login';
-import PasswordRecovery from '@/screens/PasswordRecovery';
+import { NavigationContainer } from '@react-navigation/native';  // Certifique-se de importar o NavigationContainer
+import AuthStackNavigator from '@/navigation/AuthStackNavigator';  // Importe o seu AuthNavigator
 
 export default function App() {
   return (
     <FontProvider>
-      <PasswordRecovery />
+        <AuthStackNavigator />
+      <StatusBar style="auto" />
     </FontProvider>
   );
 }
-

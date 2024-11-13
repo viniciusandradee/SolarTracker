@@ -6,11 +6,16 @@ import * as Google from "expo-auth-session/providers/google";
 
 import styles from "./style"
 
+import { useNavigation } from '@react-navigation/native';
+import { AuthNavigation } from '@/types';
+
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+
+    const navigation = useNavigation<AuthNavigation>();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -19,7 +24,6 @@ const Login = () => {
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         clientId: "473468402381-4u08vs09oq8cqvfq4tbaa70pf41lqgeg.apps.googleusercontent.com",
     });
-
 
     const doAuth = async () => {
         if (!email || !password) {
@@ -32,19 +36,6 @@ const Login = () => {
         } catch (error: any) {
             const errorMessage = error.message || "Algo de errado não está certo";
             Alert.alert("Erro", errorMessage);
-        }
-    };
-
-    const handlePasswordReset = async () => {
-        if (!email) {
-            Alert.alert("Alerta", "Digite o e-mail para redefinir a senha");
-            return;
-        }
-        try {
-            await sendPasswordResetEmail(auth, email);
-            Alert.alert("Sucesso", "E-mail de redefinição de senha enviado");
-        } catch (error: any) {
-            Alert.alert("Erro", error.message || "Erro ao enviar e-mail de redefinição de senha");
         }
     };
 
@@ -61,6 +52,13 @@ const Login = () => {
         }
     };
 
+    const goToPasswordRecovery = () => {
+        navigation.navigate("PasswordRecovery");
+    };
+
+    const goToRegister = () => {
+        navigation.navigate("Register");
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -100,7 +98,7 @@ const Login = () => {
                             />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.passwordContainer} onPress={handlePasswordReset}>
+                    <TouchableOpacity style={styles.passwordContainer} onPress={goToPasswordRecovery}>
                         <Text style={styles.passwordText}>Forgot your password?</Text>
                     </TouchableOpacity>
                 </View>
@@ -122,12 +120,10 @@ const Login = () => {
 
             <View style={styles.footer}>
                 <Text style={styles.textCreateAccount}>Don't have an account?</Text>
-                <TouchableOpacity style={styles.buttonCreateAccount}>
+                <TouchableOpacity style={styles.buttonCreateAccount} onPress={goToRegister}>
                     <Text style={styles.buttonTextCreateAccount}>Create Account</Text>
                 </TouchableOpacity>
             </View>
-
-
 
         </ScrollView>
     );
