@@ -8,11 +8,12 @@ import { FontProvider } from '@/context/FontContext';  // Ajuste o caminho confo
 //import AppNavigator from '@/Navigation/AppNavigator';
 
 import Login from '@/screens/Login';
+import PasswordRecovery from '@/screens/PasswordRecovery';
 
 export default function App() {
   return (
     <FontProvider>
-      <Login />
+      <PasswordRecovery />
     </FontProvider>
   );
 }
