@@ -8,4 +8,12 @@ type AuthStack = {
 
 type AuthNavigation = NavigationProp<AuthStack>;
 
-export { AuthStack, AuthNavigation };
+type LoggedStack = {
+  Home: undefined;
+  Profile: undefined;
+};
+
+type LoggedNavigation = NavigationProp<LoggedStack>;
+
+
+export { AuthStack, AuthNavigation, LoggedStack, LoggedNavigation };

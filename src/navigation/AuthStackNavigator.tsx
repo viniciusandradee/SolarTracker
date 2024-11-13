@@ -2,9 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthStack } from "@/types";
-import LoginScreen from "@/screens/Login";
-import RegisterScreen from "@/screens/Register";
-import PasswordRecoveryScreen from "@/screens/PasswordRecovery";
+import LoginScreen from "@/screens/auth/Login";
+import RegisterScreen from "@/screens/auth/Register";
+import PasswordRecoveryScreen from "@/screens/auth/PasswordRecovery";
 
 const Stack = createStackNavigator<AuthStack>();
 

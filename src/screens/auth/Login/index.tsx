@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert, ScrollView, TextInput } from 'react-native';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-
-import { auth } from '../../../firebaseConfig';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from '../../../../firebaseConfig';
 import * as Google from "expo-auth-session/providers/google";
 
 import styles from "./style"
@@ -11,39 +10,33 @@ import colors from '@/styles/colors';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigation } from '@/types';
 
-const Register = () => {
+
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const navigation = useNavigation<AuthNavigation>();
-
-    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-        clientId: "473468402381-4u08vs09oq8cqvfq4tbaa70pf41lqgeg.apps.googleusercontent.com",
-    });
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
+    const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+        clientId: "473468402381-4u08vs09oq8cqvfq4tbaa70pf41lqgeg.apps.googleusercontent.com",
+    });
 
-    const doRegister = async () => {
-        if (password !== confirmPassword) {
-            Alert.alert("Error", "Passwords do not match.");
+    const doAuth = async () => {
+        if (!email || !password) {
+            Alert.alert("Alerta", "Preencha todos os campos");
             return;
         }
-
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            Alert.alert("Success", "Account created successfully!");
-        } catch (error) {
-            console.error("Error creating account:", error);
-            Alert.alert("Error", (error as Error).message);
+            await signInWithEmailAndPassword(auth, email, password);
+            Alert.alert("Sucesso", "Login realizado com sucesso");
+        } catch (error: any) {
+            const errorMessage = error.message || "Algo de errado não está certo";
+            Alert.alert("Erro", errorMessage);
         }
     };
 
@@ -53,17 +46,19 @@ const Register = () => {
             if (result.type === "success" && result.authentication?.idToken) {
                 const credential = GoogleAuthProvider.credential(result.authentication.idToken);
                 await signInWithCredential(auth, credential);
-                Alert.alert("Success", "Registered with Google successfully!");
+                Alert.alert("Sucesso", "Login com Google realizado com sucesso");
             }
         } catch (error) {
-            console.error("Error signing in with Google:", error);
-            Alert.alert("Error", "Failed to register with Google.");
+            Alert.alert("Erro", "Erro ao autenticar com o Google");
         }
     };
 
+    const goToPasswordRecovery = () => {
+        navigation.navigate("PasswordRecovery");
+    };
 
-    const goToLogin = () => {
-        navigation.navigate("Login");
+    const goToRegister = () => {
+        navigation.navigate("Register");
     };
 
     return (
@@ -104,51 +99,36 @@ const Register = () => {
                             />
                         </TouchableOpacity>
                     </View>
-
-                    <View style={styles.inputWrapperImage}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Confirm Password"
-                            placeholderTextColor={colors.tertiary}
-                            value={confirmPassword}
-                            onChangeText={setConfirmPassword}
-                            secureTextEntry={!showConfirmPassword}
-                        />
-                        <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
-                            <Image
-                                source={showConfirmPassword ? require('@/../assets/Images/HidePassword.png') : require('@/../assets/Images/HidePassword.png')}
-                                style={styles.inputIcon}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={styles.passwordContainer} onPress={goToPasswordRecovery}>
+                        <Text style={styles.passwordText}>Forgot your password?</Text>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={styles.buttonRegisterContainer}>
-                    <TouchableOpacity style={styles.buttonRegister}
-                    onPress={doRegister}>
-                        <Text style={styles.buttonRegisterText}>Register</Text>
+                <View style={styles.buttonLoginContainer}>
+                    <TouchableOpacity style={styles.buttonLogin} onPress={doAuth}>
+                        <Text style={styles.buttonLoginText}>Login</Text>
                     </TouchableOpacity>
+                
+                <TouchableOpacity
+                    style={styles.googleButton}
 
-                    <TouchableOpacity
-                        style={styles.googleButton} onPress={signInWithGoogle}>
-                        <Image source={require('@/../assets/Images/GoogleLogo.png')} style={styles.logoGoogle} />
-                        <Text style={styles.googleText}>Register with Google</Text>
-                    </TouchableOpacity>
+                    onPress={signInWithGoogle}>
+                    <Image source={require('@/../assets/Images/GoogleLogo.png')} style={styles.logoGoogle} />
+                    <Text style={styles.googleText}>Register with Google</Text>
+                </TouchableOpacity>
                 </View>
             </View>
 
             <View style={styles.footer}>
-                <Text style={styles.textGoToLogin}>Already have an account?</Text>
-                <TouchableOpacity style={styles.buttonGoToLogin} onPress={goToLogin}>
-                    <Text style={styles.buttonTextGoToLogin}>Go to Login</Text>
+                <Text style={styles.textCreateAccount}>Don't have an account?</Text>
+                <TouchableOpacity style={styles.buttonCreateAccount} onPress={goToRegister}>
+                    <Text style={styles.buttonTextCreateAccount}>Create Account</Text>
                 </TouchableOpacity>
             </View>
-
-
 
         </ScrollView>
     );
 };
 
 
-export default Register;
+export default Login;

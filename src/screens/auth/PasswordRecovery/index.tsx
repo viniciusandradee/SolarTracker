@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert, ScrollView, TextInput } from 'react-native';
 
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from '../../../firebaseConfig';
+import { auth } from '../../../../firebaseConfig';
 
 import styles from "./style";
 import colors from '@/styles/colors';

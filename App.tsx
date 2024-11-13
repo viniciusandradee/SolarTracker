@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { FontProvider } from '@/context/FontContext';  // Ajuste o caminho conforme necessário
-import { NavigationContainer } from '@react-navigation/native';  // Certifique-se de importar o NavigationContainer
-import AuthStackNavigator from '@/navigation/AuthStackNavigator';  // Importe o seu AuthNavigator
+import { FontProvider } from '@/context/FontContext';
+import { NavigationContainer } from '@react-navigation/native';
+import AuthNavigator from '@/navigation/AuthStackNavigator';
+import LoggedNavigator from '@/navigation/LoggedStackNavigator';
+import { AuthContext, AuthProvider } from '@/context/AuthContext';
 
 export default function App() {
   return (
-    <FontProvider>
-        <AuthStackNavigator />
-      <StatusBar style="auto" />
-    </FontProvider>
+    <AuthProvider>
+      <FontProvider>
+          <MainNavigator />
+      </FontProvider>
+    </AuthProvider>
   );
 }
+
+const MainNavigator = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+
+  return isAuthenticated ? <LoggedNavigator /> : <AuthNavigator />;
+};
