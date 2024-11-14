@@ -1,32 +1,80 @@
-import React, { useState } from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert, ScrollView, TextInput } from 'react-native';
-import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-
-import { useNavigation } from '@react-navigation/native';
-import { LoggedNavigation } from '@/types';
+import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { database, auth } from '../../../../firebaseConfig';
 
 import styles from './style';
+import { LoggedNavigation } from '@/types';
 
 const Home = () => {
+    const navigation = useNavigation<LoggedNavigation>();
+    const [residences, setResidences] = useState<any[]>([]);  // criar um tipo para as residências se necessário?
+    const [reload, setReload] = useState(false);
+
+
+    const goToResidenceAddition = () => {
+        navigation.navigate('ResidenceAddition');
+    };
+
+    //const goToResidenceDetails = (id: string) => {
+    //  navigation.navigate('ResidenceDetails', { residenceId: id });  // Navegar para a página de detalhes (você pode definir essa tela)
+    //};
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchResidences = async () => {
+                if (!auth.currentUser) return;
+
+                const userId = auth.currentUser.uid;
+                const q = query(collection(database, 'residences'), where('userId', '==', userId));
+
+                try {
+                    const querySnapshot = await getDocs(q);
+                    const residencesList: any[] = [];
+                    querySnapshot.forEach((doc) => {
+                        residencesList.push({ id: doc.id, ...doc.data() });
+                    });
+                    residencesList.sort((a, b) => a.name.localeCompare(b.name));
+
+                    setResidences(residencesList);
+                } catch (error) {
+                    console.error('Error fetching residences:', error);
+                }
+            };
+
+            fetchResidences();
+        }, [reload])
+    );
+
+
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-
             <View style={styles.main}>
                 <Text style={styles.textEnergy}>Add your home and monitor your energy</Text>
-                <TouchableOpacity style={styles.residenceButton}>
+                <TouchableOpacity style={styles.residenceButton} onPress={goToResidenceAddition}>
                     <Image source={require('../../../../assets/Images/plusIcon.png')} style={styles.plusIcon} />
                     <Text style={styles.residenceText}>Add residence</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity style={styles.registeredResidences}>
-                    <Image source={require('../../../../assets/Images/energyIcon.png')} style={styles.energyIcon} />
-                    <Text style={styles.registeredResidencesText}>My Home</Text>
-                </TouchableOpacity>
+                {residences.length > 0 ? (
+                    residences.map((residence) => (
+                        <TouchableOpacity
+                            key={residence.id}
+                            style={styles.registeredResidences}
+                        //onPress={() => goToResidenceDetails(residence.id)}
+                        >
+                            <Image source={require('../../../../assets/Images/energyIcon.png')} style={styles.energyIcon} />
+                            <Text style={styles.registeredResidencesText}>{residence.name}</Text>
+                        </TouchableOpacity>
+                    ))
+                ) : (
+                    <Text style={styles.textNoResidence}>No residences added yet</Text>
+                )}
             </View>
         </ScrollView>
     );
 };
-
 
 export default Home;

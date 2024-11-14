@@ -4,6 +4,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 import Home from '@/screens/logged/Home';
 import Profile from '@/screens/logged/Profile';
+import ResidenceAddition from '@/screens/logged/ResidenceAddition';
 
 import styles from '@/styles/drawerStyle';
 
@@ -66,6 +67,10 @@ const LoggedDrawerNavigator = () => {
         drawerItemStyle: styles.itemStyle
       }} />
       <Drawer.Screen name="Profile" component={Profile} options={{
+        drawerItemStyle: styles.itemStyle
+      }} />
+
+      <Drawer.Screen name="ResidenceAddition" component={ResidenceAddition} options={{
         drawerItemStyle: styles.itemStyle
       }} />
     </Drawer.Navigator>

@@ -3,7 +3,6 @@ import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert, Scr
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 
 import { auth } from '../../../../firebaseConfig';
-import * as Google from "expo-auth-session/providers/google";
 
 import styles from "./style"
 import colors from '@/styles/colors';
@@ -11,11 +10,10 @@ import colors from '@/styles/colors';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigation } from '@/types';
 import { AuthContext } from '@/context/AuthContext';
-import { useGoogleAuth } from '@/utils/constant';
+
 
 const Register = () => {
-    const { registerWithEmail, signInWithGoogle } = useContext(AuthContext);
-    const { request, response, promptAsync } = useGoogleAuth();
+    const { registerWithEmail } = useContext(AuthContext);
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -35,7 +33,7 @@ const Register = () => {
 
     const doRegister = async () => {
         if (!email || !password) {
-            Alert.alert("Alerta", "Preencha todos os campos");
+            Alert.alert("Alert", "Fill in all the fields");
             return;
           }
         if (password !== confirmPassword) {
@@ -51,15 +49,6 @@ const Register = () => {
         }
     };
 
-    const signInWithGoogleHandler = async () => {
-        try {
-            if (request) {
-                await promptAsync();
-            }
-        } catch (error) {
-            Alert.alert("Erro", "Erro ao autenticar com o Google");
-        }
-    };
     const goToLogin = () => {
         navigation.navigate("Login");
     };
@@ -128,7 +117,9 @@ const Register = () => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={styles.googleButton} onPress={signInWithGoogleHandler}>
+                        style={styles.googleButton} 
+                        //onPress={signInWithGoogleHandler}
+                        >
                         <Image source={require('@/../assets/Images/GoogleLogo.png')} style={styles.logoGoogle} />
                         <Text style={styles.googleText}>Register with Google</Text>
                     </TouchableOpacity>

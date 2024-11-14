@@ -18,14 +18,14 @@ const PasswordRecovery = () => {
 
     const handlePasswordReset = async () => {
         if (!email) {
-            Alert.alert("Alerta", "Digite o e-mail para redefinir a senha");
+            Alert.alert("Alert", "Enter the email to reset the password");
             return;
         }
         try {
             await sendPasswordResetEmail(auth, email);
-            Alert.alert("Sucesso", "E-mail de redefinição de senha enviado");
+            Alert.alert("Success", "Password reset email sent");
         } catch (error: any) {
-            Alert.alert("Erro", error.message || "Erro ao enviar e-mail de redefinição de senha");
+            Alert.alert("Erro", error.message || "Error sending password reset email");
         }
     };
 

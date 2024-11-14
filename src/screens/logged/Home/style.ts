@@ -28,7 +28,12 @@ const styles = StyleSheet.create({
     },
 
     textEnergy: {
-        color: colors.quinary
+        color: colors.quinary,
+    },
+
+    textNoResidence: {
+        color: colors.quinary,
+        marginTop: 30
     },
 
     residenceButton: {
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.tertiary,
         
         borderRadius: 6,
-        marginTop: 60,
+        marginTop: 40,
     },
 
     energyIcon: {

@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Text, Alert, ScrollView, TextInput } from 'react-native';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from '../../../../firebaseConfig';
-import * as Google from "expo-auth-session/providers/google";
 
 import styles from "./style"
 import colors from '@/styles/colors';
@@ -10,12 +9,9 @@ import colors from '@/styles/colors';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigation } from '@/types';
 import { AuthContext } from '@/context/AuthContext';
-import { useGoogleAuth } from '@/utils/constant';
-
 
 const Login = () => {
-    const { authentication, signInWithGoogle } = useContext(AuthContext);
-    const { request, response, promptAsync } = useGoogleAuth();
+    const { authentication, handleGoogleLogin } = useContext(AuthContext);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -29,26 +25,17 @@ const Login = () => {
     
   const doAuth = async () => {
     if (!email || !password) {
-      Alert.alert("Alerta", "Preencha todos os campos");
+      Alert.alert("Alert", "Fill in all the fields");
       return;
     }
     try {
       await authentication(email, password);
     } catch (error: any) {
-      const errorMessage = error.message || "Algo deu errado. Tente novamente.";
+      const errorMessage = error.message || "Something went wrong. Please try again.";
       Alert.alert("Erro", errorMessage);
     }
   };
 
-  const signInWithGoogleHandler = async () => {
-    try {
-        if (request) {
-            await promptAsync();
-        }
-    } catch (error) {
-        Alert.alert("Erro", "Erro ao autenticar com o Google");
-    }
-};
 
     const goToPasswordRecovery = () => {
         navigation.navigate("PasswordRecovery");
@@ -108,7 +95,8 @@ const Login = () => {
                 
                 <TouchableOpacity
                     style={styles.googleButton}
-                    onPress={signInWithGoogleHandler}>
+                    onPress={handleGoogleLogin}
+                    >
                     <Image source={require('@/../assets/Images/GoogleLogo.png')} style={styles.logoGoogle} />
                     <Text style={styles.googleText}>Login with Google</Text>
                 </TouchableOpacity>
