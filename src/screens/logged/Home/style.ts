@@ -23,10 +23,6 @@ const styles = StyleSheet.create({
         marginTop: 40
     },
 
-    titleLogo: {
-
-    },
-
     textEnergy: {
         color: colors.quinary,
     },
@@ -78,6 +74,8 @@ const styles = StyleSheet.create({
         marginRight: 20,
         width: 35,
         height: 35,
+        position: 'absolute',
+        left: 25
     },
 
     registeredResidencesText: {
@@ -85,6 +83,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
     },
+
+    solarPanelText: {
+        position: "absolute",
+        right: 5,
+        bottom: 2,
+        fontSize: 12,
+        color: "#3423A6"
+    }
 });
 
 export default styles;

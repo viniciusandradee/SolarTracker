@@ -12,6 +12,7 @@ type LoggedDrawer = {
   Home: undefined;
   Profile: undefined;
   ResidenceAddition: undefined;
+  ResidenceDetails: { residenceId: string };
 };
 
 type LoggedNavigation = NavigationProp<LoggedDrawer>;

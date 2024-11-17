@@ -4,8 +4,10 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { database, auth } from '../../../../firebaseConfig';
 
+
 import styles from './style';
 import { LoggedNavigation } from '@/types';
+
 
 const Home = () => {
     const navigation = useNavigation<LoggedNavigation>();
@@ -17,11 +19,11 @@ const Home = () => {
         navigation.navigate('ResidenceAddition');
     };
 
-    //const goToResidenceDetails = (id: string) => {
-    //  navigation.navigate('ResidenceDetails', { residenceId: id });  // Navegar para a página de detalhes (você pode definir essa tela)
-    //};
+    const goToResidenceDetails = (residenceId: string) => {
+        navigation.navigate('ResidenceDetails', { residenceId });
+    };
 
-
+    
     useFocusEffect(
         React.useCallback(() => {
             const fetchResidences = async () => {
@@ -63,10 +65,22 @@ const Home = () => {
                         <TouchableOpacity
                             key={residence.id}
                             style={styles.registeredResidences}
-                        //onPress={() => goToResidenceDetails(residence.id)}
+                            onPress={() => goToResidenceDetails(residence.id)}
                         >
-                            <Image source={require('../../../../assets/Images/energyIcon.png')} style={styles.energyIcon} />
+                            <Image
+                                source={
+                                    residence.hasSolarPanel
+                                        ? require('../../../../assets/Images/solarPanelIcon.png')
+                                        : require('../../../../assets/Images/noSolarPanelIcon.png')
+                                }
+                                style={styles.energyIcon}
+                            />
                             <Text style={styles.registeredResidencesText}>{residence.name}</Text>
+                            {residence.hasSolarPanel ? (
+                                <Text style={styles.solarPanelText}>Solar Panel Installed</Text>
+                            ) : (
+                                <Text style={styles.solarPanelText}>No Solar Panel</Text>
+                            )}
                         </TouchableOpacity>
                     ))
                 ) : (

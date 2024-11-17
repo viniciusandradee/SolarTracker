@@ -5,16 +5,18 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import Home from '@/screens/logged/Home';
 import Profile from '@/screens/logged/Profile';
 import ResidenceAddition from '@/screens/logged/ResidenceAddition';
+import ResidenceDetails from '@/screens/logged/ResidenceDetails';
 
 import styles from '@/styles/drawerStyle';
 
 import { AuthContext } from '@/context/AuthContext';
+import { LoggedDrawer } from '@/types';
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<LoggedDrawer>();
 
 const LoggedDrawerNavigator = () => {
   const { signOut } = useContext(AuthContext);
-  
+
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -69,8 +71,10 @@ const LoggedDrawerNavigator = () => {
       <Drawer.Screen name="Profile" component={Profile} options={{
         drawerItemStyle: styles.itemStyle
       }} />
-
       <Drawer.Screen name="ResidenceAddition" component={ResidenceAddition} options={{
+        drawerItemStyle: styles.itemStyle
+      }} />
+      <Drawer.Screen name="ResidenceDetails" component={ResidenceDetails} options={{
         drawerItemStyle: styles.itemStyle
       }} />
     </Drawer.Navigator>

@@ -1,5 +1,6 @@
 import { auth, database } from "../../firebaseConfig";
 import { collection, addDoc } from 'firebase/firestore';
+import { getTariffFlag } from "./tariffUtils";
 
 type ResidenceData = {
   name: string;
@@ -15,12 +16,15 @@ const createResidence = async (data: ResidenceData) => {
       return;
     }
 
+    const tariffFlag = getTariffFlag(data.state);
+
     const docRef = await addDoc(collection(database, 'residences'), {
       name: data.name,
       state: data.state,
       hasSolarPanel: data.hasSolarPanel,
       createdAt: new Date(),
       userId: userId,
+      tariffFlag: tariffFlag
     });
     console.log("Residence created successfully!", docRef.id);
     return docRef.id;
@@ -29,4 +33,4 @@ const createResidence = async (data: ResidenceData) => {
   }
 };
 
-export { createResidence };
+export { createResidence, ResidenceData };
