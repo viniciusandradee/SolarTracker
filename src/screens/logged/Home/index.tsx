@@ -76,6 +76,7 @@ const Home = () => {
                                 style={styles.energyIcon}
                             />
                             <Text style={styles.registeredResidencesText}>{residence.name}</Text>
+                            <Text style={styles.stateText}>{residence.state}</Text>
                             {residence.hasSolarPanel ? (
                                 <Text style={styles.solarPanelText}>Solar Panel Installed</Text>
                             ) : (

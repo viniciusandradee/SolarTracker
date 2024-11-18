@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     main: {
         display: 'flex',
         alignItems: 'center',
-        marginTop: 40
+        marginVertical: 40,
     },
 
     textEnergy: {
@@ -82,6 +82,14 @@ const styles = StyleSheet.create({
         color: colors.quinary,
         fontSize: 18,
         textAlign: 'center',
+    },
+
+    stateText: {
+        position: 'absolute',
+        left: 5,
+        bottom: 2,
+        fontSize: 12,
+        color: "#3423A6"
     },
 
     solarPanelText: {

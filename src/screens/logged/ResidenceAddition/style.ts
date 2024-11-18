@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         width: '60%',
         backgroundColor: colors.quinary,
         color: colors.black,
-        fontSize: 16,
+        fontSize: 14,
         paddingLeft: 20,
         borderRadius: 8,
     },

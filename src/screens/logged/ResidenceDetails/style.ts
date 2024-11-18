@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     },
 
     tariffFlagText: {
-        color: 'yellow',
         textAlign: 'center',
     },
 
@@ -85,11 +84,19 @@ const styles = StyleSheet.create({
     energyBillContainer: {
         backgroundColor: colors.tertiary,
         width: '90%',
-        height: 200,
+        height: 250,
         borderRadius: 6,
-
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom: 20,
+        flexGrow: 1,
     },
+
+    expandedContainer: {
+        flexGrow: 1,
+        minHeight: 200,
+    },
+
+    
 
     energyBillText: {
         marginTop: 15,
@@ -97,6 +104,29 @@ const styles = StyleSheet.create({
         color: colors.quinary,
         fontSize: 18,
     },
+
+    calculateButton: {
+        marginTop: 15,
+        backgroundColor: colors.secondary,
+        borderRadius: 4,
+        width: '25%',
+        height: 25,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    calculateButtonText: {
+        color: colors.quinary,
+        fontSize: 12,
+    },
+
+    resultText: {
+        color: colors.quinary,
+        fontSize: 12,
+        marginTop: 20,
+    },
+
 
     input: {
         marginTop: 10,
@@ -133,12 +163,12 @@ const styles = StyleSheet.create({
         marginTop: 30,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',  // Distribui o espaço entre os filhos
+        justifyContent: 'space-around',
         width: '100%'
     },
 
     helpContainer: {
-        width: '40%',  // Aumentando a largura para garantir espaço entre eles
+        width: '40%',
         height: 180,
         backgroundColor: colors.tertiary,
         borderRadius: 6,
@@ -155,10 +185,17 @@ const styles = StyleSheet.create({
     },
 
     economyText: {
-        textAlign: 'center',
+        textAlign: 'justify',
         color: colors.quinary,
         fontSize: 10,
         paddingHorizontal: 5
+    },
+
+    line2: {
+        backgroundColor: colors.quinary,
+        height: 1,
+        width: '90%',
+        marginVertical: 15,
     },
 
     spanDrive: {
@@ -188,17 +225,22 @@ const styles = StyleSheet.create({
 
     solarPanelText: {
         marginTop: 10,
-        width: '85%'
+        width: '85%',
+        textAlign: 'justify',
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+
+
+    firstLineText: {
+        marginTop: 10,
+
+        fontSize: 14,
+        width: '85%',
     },
 
     spanEnergy: {
         color: 'yellow'
-    },
-
-    // FOOTER
-
-    footer: {
-
     },
 
 });

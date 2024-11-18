@@ -89,6 +89,7 @@ const ResidenceAddition = () => {
                         <Text style={styles.inputText}>Name:</Text>
                         <TextInput
                             style={styles.input}
+                            placeholder='Type here...'
                             placeholderTextColor={colors.tertiary}
                             value={name}
                             onChangeText={(text) => setName(text)}
