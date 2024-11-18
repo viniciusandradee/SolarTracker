@@ -25,6 +25,8 @@ const ResidenceDetails = () => {
     const [kwh, setKwh] = useState<string>('');
     const [calculatedBill, setCalculatedBill] = useState<string | null>(null);
 
+    const [emissionGlobal, setEmissionGlobal] = useState<number>(0);
+    const [emissionBrazil, setEmissionBrazil] = useState<number>(0);
 
     const getTariffDetails = (tariffFlag: string) => {
         let priceFlag = 0;
@@ -36,14 +38,14 @@ const ResidenceDetails = () => {
                 color = 'green';
                 break;
             case 'Yellow':
-                priceFlag =  0.01885;
+                priceFlag = 0.01885;
                 color = 'yellow';
                 break;
-            case 'Red':
+            case 'Red 1':
                 priceFlag = 0.03971;
                 color = 'red';
                 break;
-            case 'Red2':
+            case 'Red 2':
                 priceFlag = 0.09246;
                 color = 'red';
                 break;
@@ -58,7 +60,7 @@ const ResidenceDetails = () => {
     let priceFlag = 0;
     let priceColor = '';
     if (residenceData) {
-        const tariffDetails = getTariffDetails(residenceData.tariffFlag);
+        const tariffDetails = getTariffDetails(residenceData.tariffFlag.flag);
         priceFlag = tariffDetails.priceFlag;
         priceColor = tariffDetails.color;
     }
@@ -116,12 +118,22 @@ const ResidenceDetails = () => {
 
         const result = calculateEnergyBill(energyParams);
         setCalculatedBill(result);
+
+        // Cálculo de emissões
+        const yearlyConsumption = Number(kwh) * 12; // kWh anual
+        const globalEmission = yearlyConsumption * 0.5; // kgCO2/ano global
+        const brazilEmission = yearlyConsumption * 0.1; // kgCO2/ano Brasil
+
+        setEmissionGlobal(globalEmission);
+        setEmissionBrazil(brazilEmission);
     };
 
 
     useEffect(() => {
         setKwh('');
         setCalculatedBill(null);
+        setEmissionGlobal(0);
+        setEmissionBrazil(0);
         const fetchResidenceData = async () => {
             try {
                 const docRef = doc(database, 'residences', residenceId);
@@ -169,7 +181,7 @@ const ResidenceDetails = () => {
 
                             <View style={styles.infosResidenceContainer}>
                                 <Text style={[styles.tariffFlagText, { color: priceColor }]}>
-                                    {residenceData.tariffFlag}
+                                    {residenceData.tariffFlag.flag}
                                 </Text>
                             </View>
 
@@ -203,27 +215,29 @@ const ResidenceDetails = () => {
                             {calculatedBill && <Text style={styles.resultText}>{calculatedBill}</Text>}
                             <View style={styles.line}></View>
 
-                            <Text style={styles.savingsText}>With solar energy, your savings would be (Y - (30 to 50)) per month.</Text>
-                            <Text style={styles.savingsText2}>≅ 80% to 90% savings</Text>
+                            <Text style={styles.savingsText}>With solar energy, your savings would be ≅ 80% to 90% per month.</Text>
+                            <Text style={styles.savingsText2}>Average rate of R$ 30 to R$ 60</Text>
 
                         </View>
 
 
                         <View style={styles.sustentableEnergyContainer}>
                             <View style={styles.helpContainer}>
-                                <Text style={styles.co2Text}>You are helping to avoid the emission of 180 kg of CO₂ per year!</Text>
+                                <Text style={styles.co2Text}>
+                                    You are helping to avoid the emission of {emissionBrazil.toFixed() || 0} kg of CO₂ per year!
+                                </Text>
                             </View>
                             <View style={styles.helpContainer}>
                                 <Text style={styles.economyText}>
-                                    Globally: Avoiding 900 kgCO₂/year is equivalent to:{"\n"}{"\n"}
-                                    • Do not <Text style={styles.spanDrive}>drive a car</Text> for 6 months.{"\n"}
-                                    • Plant around 40 <Text style={styles.spanTree}>trees</Text>.
+                                    Globally: Avoiding {emissionGlobal.toFixed() || 0} kgCO₂/year is equivalent to:{"\n"}{"\n"}
+                                    • Do not <Text style={styles.spanDrive}>drive a car</Text> for {Math.round(((emissionGlobal || 0) / 1800) * 12)} months.{"\n"}
+                                    • Plant around {Math.round((emissionGlobal || 0) / 22.5)} <Text style={styles.spanTree}>trees</Text>.
                                 </Text>
                                 <View style={styles.line2}></View>
                                 <Text style={styles.economyText}>
-                                    In Brazil: Avoiding 180 kgCO₂/year is equivalent to:{"\n"}{"\n"}
-                                    • Do not <Text style={styles.spanDrive}>drive</Text> for 1 month.{"\n"}
-                                    • Plant about 8 <Text style={styles.spanTree}>trees</Text>.
+                                    In Brazil: Avoiding {emissionBrazil.toFixed() || 0} kgCO₂/year is equivalent to:{"\n"}{"\n"}
+                                    • Do not <Text style={styles.spanDrive}>drive</Text> for {Math.round(((emissionBrazil || 0) / 1800) * 12)} month.{"\n"}
+                                    • Plant about {Math.round((emissionBrazil || 0) / 22.5)} <Text style={styles.spanTree}>trees</Text>.
                                 </Text>
                             </View>
                         </View>

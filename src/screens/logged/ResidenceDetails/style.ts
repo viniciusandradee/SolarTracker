@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     },
 
     savingsText: {
-        marginTop: 20,
+        marginTop: 30,
         textAlign: 'center',
         fontSize: 12,
         color: colors.quinary

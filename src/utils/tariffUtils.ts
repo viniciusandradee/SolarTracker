@@ -4,9 +4,9 @@ type StateTariffMap = {
 
 export const getTariffFlag = (state: string): { flag: string; color: string } => {
     const tariffFlags: StateTariffMap = {
-        "São Paulo": { flag: "Red", color: "#D9534F" },
+        "São Paulo": { flag: "Yellow", color: "#D9534F" },
         "Rio de Janeiro": { flag: "Yellow", color: "#FFB83A" },
-        "Acre": { flag: "Green", color: "#5BBF6B" },
+        "Acre": { flag: "Yellow", color: "#5BBF6B" },
         "Alagoas": { flag: "Yellow", color: "#FFB83A" },
         "Amapá": { flag: "Yellow", color: "#FFB83A" },
         "Amazonas": { flag: "Yellow", color: "#FFB83A" },
