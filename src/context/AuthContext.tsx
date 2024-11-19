@@ -15,6 +15,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { AuthSessionResult } from "expo-auth-session";
+import { Platform } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -26,6 +27,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
         clientId: '473468402381-7v8i9ld37vrgns96a9v3s6iv0ess9pig.apps.googleusercontent.com',
+        redirectUri: Platform.select({
+            ios: 'https://auth.expo.io/@viniciusandradee/solartracker',
+            android: 'https://auth.expo.io/@viniciusandradee/solartracker',
+            default: 'http://localhost:8081',
+        }),
     });
 
     const authentication = async (email: string, password: string) => {

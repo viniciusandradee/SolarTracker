@@ -1,7 +1,9 @@
 {
   "expo": {
     "name": "SolarTracker",
-    "slug": "SolarTracker",
+    "slug": "solartracker",
+    "platforms": ["ios", "android", "web"],
+    "privacy": "public",
     "version": "1.0.0",
     "scheme": "solartracker",
     "orientation": "portrait",
@@ -12,17 +14,27 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "auth": {
+      "redirectUrl": "https://auth.expo.io/@viniciusandradee/solartracker"
+    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "newArchEnabled": true,
+      "package": "com.vinicius.solartracker",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "google": {
+          "clientId": "1028896025969-85dsqhf6p8aog18af6qhahg2l89ejghd.apps.googleusercontent.com"
+        }
+      }
     }
   }
 }
