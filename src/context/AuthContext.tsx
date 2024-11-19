@@ -9,7 +9,7 @@ import * as firebaseAuth from "firebase/auth";
 
 import { auth, database } from "../../firebaseConfig";
 import { AuthContextProps } from "@/types/context";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
@@ -21,22 +21,31 @@ WebBrowser.maybeCompleteAuthSession();
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-    const [user, setUser] = useState<firebaseAuth.User | null>();
+    const [user, setUser] = useState<firebaseAuth.User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-        clientId: '473468402381-4u08vs09oq8cqvfq4tbaa70pf41lqgeg.apps.googleusercontent.com',
+        clientId: '473468402381-7v8i9ld37vrgns96a9v3s6iv0ess9pig.apps.googleusercontent.com',
     });
 
     const authentication = async (email: string, password: string) => {
-        firebaseAuth.signInWithEmailAndPassword(auth, email, password);
+        try {
+            const userCredential = await firebaseAuth.signInWithEmailAndPassword(auth, email, password);
+            setUser(userCredential.user);
+            setIsAuthenticated(true);
+        } catch (error) {
+            console.error("Erro ao autenticar:", error);
+        }
     };
+
 
     const registerWithEmail = async (email: string, password: string) => {
         try {
             const userCredential = await firebaseAuth.createUserWithEmailAndPassword(auth, email, password);
             setUser(userCredential.user);
-            await addDoc(collection(database, "users"), {
+
+            const userDocRef = doc(database, "users", userCredential.user.uid);
+            await setDoc(userDocRef, {
                 uid: userCredential.user.uid,
                 email: userCredential.user.email,
             });
@@ -51,14 +60,18 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
     const handleGoogleLogin = async (): Promise<AuthSessionResult> => {
         const result = await promptAsync();
-        if (result?.type === 'success') {
+        if (result?.type === "success") {
             const { id_token } = result.params;
             const credential = GoogleAuthProvider.credential(id_token);
-            await signInWithCredential(auth, credential);
-            setUser (auth.currentUser );
-            setIsAuthenticated(true);
+            try {
+                const userCredential = await signInWithCredential(auth, credential);
+                setUser(userCredential.user);
+                setIsAuthenticated(true);
+            } catch (error) {
+                console.error("Erro ao fazer login com o Google:", error);
+            }
         } else {
-            console.error("Erro ao fazer login com o Google:", result);
+            console.error("Login com Google não concluído:", result);
         }
         return result;
     };
@@ -69,7 +82,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
             const credential = GoogleAuthProvider.credential(id_token);
             signInWithCredential(auth, credential)
                 .then((userCredential) => {
-                    setUser (userCredential.user);
+                    setUser(userCredential.user);
                     setIsAuthenticated(true);
                 })
                 .catch((error) => {
@@ -80,7 +93,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         const unsubscribe = firebaseAuth.onAuthStateChanged(auth, (user) => {
-            setUser (user);
+            setUser(user);
             setIsAuthenticated(!!user);
         });
         return () => unsubscribe();
@@ -88,7 +101,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
 
     return (
-        <AuthContext.Provider value={{isAuthenticated, authentication, registerWithEmail, signOut, handleGoogleLogin }}>
+        <AuthContext.Provider value={{ isAuthenticated, authentication, registerWithEmail, signOut, handleGoogleLogin, user }}>
             {children}
         </AuthContext.Provider>
     );

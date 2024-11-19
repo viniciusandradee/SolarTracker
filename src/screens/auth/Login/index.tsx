@@ -37,6 +37,14 @@ const Login = () => {
   };
 
 
+  const handleGoogleLoginButtonPress = async () => {
+    const result = await handleGoogleLogin();
+    if (result?.type === "success") {
+    } else {
+        Alert.alert("Erro", "Google login failed, please try again.");
+    }
+};
+
     const goToPasswordRecovery = () => {
         navigation.navigate("PasswordRecovery");
     };
@@ -95,7 +103,7 @@ const Login = () => {
                 
                 <TouchableOpacity
                     style={styles.googleButton}
-                    onPress={handleGoogleLogin}
+                    onPress={handleGoogleLoginButtonPress}
                     >
                     <Image source={require('@/../assets/Images/GoogleLogo.png')} style={styles.logoGoogle} />
                     <Text style={styles.googleText}>Login with Google</Text>
