@@ -48,22 +48,22 @@ const styles = StyleSheet.create({
     },
 
     pickerContainer: {
-        height: 30,
+        height: 35,
         width: '60%',
         backgroundColor: colors.quinary,
         borderRadius: 8,
         justifyContent: 'center', 
-        paddingLeft: 10,
+        paddingLeft: 5,
         marginLeft: 5,
     },
 
     pickerContainer1: {
-        height: 30,
+        height: 35,
         width: '40%',
         backgroundColor: colors.quinary,
         borderRadius: 8,
         justifyContent: 'center', 
-        paddingLeft: 10,
+        paddingLeft: 5,
         marginLeft: 5,
     },
 
@@ -72,22 +72,22 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        height: 30,
+        height: 35,
         width: '60%',
         backgroundColor: colors.quinary,
         color: colors.black,
         fontSize: 14,
-        paddingLeft: 20,
+        paddingLeft: 15,
         borderRadius: 8,
     },
     
     inputSolarPanel: {
-        height: 30,
+        height: 35,
         width: '40%',
         backgroundColor: colors.quinary,
         color: colors.black,
         fontSize: 16,
-        paddingLeft: 20,
+        paddingLeft: 15,
         borderRadius: 8,
     },
 

@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     energyBillContainer: {
         backgroundColor: colors.tertiary,
         width: '90%',
-        height: 250,
+        height: 270,
         borderRadius: 6,
         alignItems: 'center',
         paddingBottom: 20,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: colors.quinary,
         width: '45%',
-        height: 20,
+        height: 35,
         borderRadius: 4,
         paddingLeft: 10,
         fontSize: 10,
