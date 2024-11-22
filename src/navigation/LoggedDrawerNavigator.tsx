@@ -4,6 +4,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 import Home from '@/screens/logged/Home';
 import Profile from '@/screens/logged/Profile';
+import IAChat from '@/screens/logged/IAChat';
 import ResidenceAddition from '@/screens/logged/ResidenceAddition';
 import ResidenceDetails from '@/screens/logged/ResidenceDetails';
 
@@ -55,6 +56,16 @@ const LoggedDrawerNavigator = () => {
               />
               <Text style={styles.drawerLabel}>My Profile</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('IAChat')}
+              style={styles.itemStyle}
+            >
+              <Image
+                source={require('../../assets/Images/IAIcon.png')}
+                style={styles.ProfileIcon}
+              />
+              <Text style={styles.drawerLabel}>I.A</Text>
+            </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={styles.signOutButton}
@@ -69,6 +80,9 @@ const LoggedDrawerNavigator = () => {
         drawerItemStyle: styles.itemStyle
       }} />
       <Drawer.Screen name="Profile" component={Profile} options={{
+        drawerItemStyle: styles.itemStyle
+      }} />
+      <Drawer.Screen name="IAChat" component={IAChat} options={{
         drawerItemStyle: styles.itemStyle
       }} />
       <Drawer.Screen name="ResidenceAddition" component={ResidenceAddition} options={{

@@ -11,6 +11,7 @@ type AuthNavigation = NavigationProp<AuthStack>;
 type LoggedDrawer = {
   Home: undefined;
   Profile: undefined;
+  IAChat: undefined;
   ResidenceAddition: undefined;
   ResidenceDetails: { residenceId: string };
 };
