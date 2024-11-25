@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { ref, get, set } from 'firebase/database';
 
 import styles from './style';
 
-import { useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
-import { LoggedDrawer } from '@/types';
-import { database } from 'firebaseConfig';
+import { LoggedDrawer, LoggedNavigation } from '@/types';
+import { database, realtimeDatabase } from 'firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import colors from '@/styles/colors';
 import { calculateEnergyBill } from '@/utils/energyCalculations';
@@ -17,6 +18,7 @@ type ResidenceDetailsRouteProp = RouteProp<LoggedDrawer, 'ResidenceDetails'>;
 
 const ResidenceDetails = () => {
     const route = useRoute<ResidenceDetailsRouteProp>();
+    const navigation = useNavigation<LoggedNavigation>();
     const { residenceId } = route.params;
 
     const [residenceData, setResidenceData] = useState<any | null>(null);
@@ -27,6 +29,12 @@ const ResidenceDetails = () => {
 
     const [emissionGlobal, setEmissionGlobal] = useState<number>(0);
     const [emissionBrazil, setEmissionBrazil] = useState<number>(0);
+
+    const [isPanelConnected, setIsPanelConnected] = useState<boolean>(false);
+    const [panelDetails, setPanelDetails] = useState<any | null>(null);
+    const [sensorData, setSensorData] = useState<any | null>(null);
+    const [consumptionData, setConsumptionData] = useState<any | null>(null);
+
 
     const getTariffDetails = (tariffFlag: string) => {
         let priceFlag = 0;
@@ -128,32 +136,82 @@ const ResidenceDetails = () => {
         setEmissionBrazil(brazilEmission);
     };
 
-
-    useEffect(() => {
-        setKwh('');
-        setCalculatedBill(null);
-        setEmissionGlobal(0);
-        setEmissionBrazil(0);
-        const fetchResidenceData = async () => {
-            try {
-                const docRef = doc(database, 'residences', residenceId);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    setResidenceData(docSnap.data());
-                } else {
-                    console.log("No such document!");
-                }
-            } catch (error) {
-                console.error('Error fetching residence data:', error);
-            } finally {
-                setLoading(false);
+    const fetchSensorData = async () => {
+        try {
+            const sensorRef = ref(realtimeDatabase, `sensor`);
+            const consumptionRef = ref(realtimeDatabase, `energia`);
+    
+            const sensorSnapshot = await get(sensorRef);
+            const consumptionSnapshot = await get(consumptionRef);
+    
+            if (sensorSnapshot.exists()) {
+                setSensorData(sensorSnapshot.val());
+            } else {
+                console.log('No sensor data found.');
             }
-        };
+    
+            if (consumptionSnapshot.exists()) {
+                setConsumptionData(consumptionSnapshot.val());
+            } else {
+                console.log('No energy data found.');
+            }
+        } catch (error) {
+            console.error('Error fetching sensor data:', error);
+        }
+    };
+    
 
-        fetchResidenceData();
 
-    }, [residenceId]);
+    const fetchSolarPanelStatus = async () => {
+        try {
+            const panelRef = ref(realtimeDatabase, `solarPanels/${residenceId}`);
+            const snapshot = await get(panelRef);
+            if (snapshot.exists()) {
+                setIsPanelConnected(true);
+                setPanelDetails(snapshot.val());
+            } else {
+                setIsPanelConnected(false);
+            }
+        } catch (error) {
+            console.error('Error fetching solar panel status:', error);
+        }
+    };
+    
+
+
+    useFocusEffect(
+        useCallback(() => {
+            setLoading(true);
+            setKwh('');
+            setCalculatedBill(null);
+            setEmissionGlobal(0);
+            setEmissionBrazil(0);
+            const fetchData = async () => {
+                await fetchResidenceData();
+                await fetchSolarPanelStatus();
+                await fetchSensorData();
+                setLoading(false);
+            };
+
+            fetchData();
+        }, [residenceId])
+    );
+
+    const fetchResidenceData = async () => {
+        try {
+            const docRef = doc(database, 'residences', residenceId);
+            const docSnap = await getDoc(docRef);
+    
+            if (docSnap.exists()) {
+                setResidenceData(docSnap.data());
+            } else {
+                console.log('No document found!');
+            }
+        } catch (error) {
+            console.error('Error fetching residence data:', error);
+        }
+    };
+    
 
     if (loading) {
         return <View style={styles.loadingView}><Text>Loading...</Text></View>;
@@ -167,9 +225,49 @@ const ResidenceDetails = () => {
         <View>
             {residenceData.hasSolarPanel ? (
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <Text>Details for residence with solar panel</Text>
-                    <Text>Panel Type: {residenceData.panelType}</Text>
-                    <Text>Solar System Capacity: {residenceData.solarCapacity} kW</Text>
+                    {isPanelConnected ? (
+                        <View>
+                            <View style={styles.panelDetailsContainer}>
+                                <Text style={styles.panelText}>Solar Panel Details</Text>
+                            </View>
+
+                            {/* Consumption Data */}
+                            {consumptionData && Object.values(consumptionData.consumo).length > 0 && (
+                                <View style={styles.dataContainer}>
+                                    <Text style={styles.dataTitle}>Consumption Data</Text>
+                                    {Object.values(consumptionData.consumo).map((value, index) => (
+                                        <Text key={index} style={styles.dataText}>
+                                            {String(value)} kWh
+                                        </Text>
+                                    ))}
+                                </View>
+                            )}
+
+                            {/* Sensor Data */}
+                            {sensorData && (
+                                <View style={styles.dataContainer}>
+                                    <Text style={styles.dataTitle}>Sensor Data</Text>
+                                    {sensorData.temperatura && (
+                                        <Text style={styles.dataText}>
+                                            Temperature: {(Object.values(sensorData.temperatura) as number[]).slice(-1)[0]}°C
+                                        </Text>
+                                    )}
+                                    {sensorData.umidade && (
+                                        <Text style={styles.dataText}>
+                                            Humidity: {(Object.values(sensorData.umidade) as number[]).slice(-1)[0]}%
+                                        </Text>
+                                    )}
+                                </View>
+                            )}
+                        </View>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.connectButton}
+                            onPress={() => navigation.navigate('SolarPanelAddition', { residenceId })}
+                        >
+                            <Text style={styles.connectButtonText}>Connect to Solar Panel</Text>
+                        </TouchableOpacity>
+                    )}
                 </ScrollView>
             ) : (
                 <ScrollView contentContainerStyle={styles.scrollContainer}>

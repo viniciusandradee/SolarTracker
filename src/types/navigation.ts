@@ -14,6 +14,7 @@ type LoggedDrawer = {
   IAChat: undefined;
   ResidenceAddition: undefined;
   ResidenceDetails: { residenceId: string };
+  SolarPanelAddition: { residenceId: string };
 };
 
 type LoggedNavigation = NavigationProp<LoggedDrawer>;

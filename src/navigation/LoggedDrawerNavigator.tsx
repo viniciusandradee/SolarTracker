@@ -7,6 +7,7 @@ import Profile from '@/screens/logged/Profile';
 import IAChat from '@/screens/logged/IAChat';
 import ResidenceAddition from '@/screens/logged/ResidenceAddition';
 import ResidenceDetails from '@/screens/logged/ResidenceDetails';
+import SolarPanelAddition from '@/screens/logged/SolarPanelAddition';
 
 import styles from '@/styles/drawerStyle';
 
@@ -89,6 +90,9 @@ const LoggedDrawerNavigator = () => {
         drawerItemStyle: styles.itemStyle
       }} />
       <Drawer.Screen name="ResidenceDetails" component={ResidenceDetails} options={{
+        drawerItemStyle: styles.itemStyle
+      }} />
+      <Drawer.Screen name="SolarPanelAddition" component={SolarPanelAddition} options={{
         drawerItemStyle: styles.itemStyle
       }} />
     </Drawer.Navigator>

@@ -12,6 +12,72 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary
     },
 
+
+    // SOLARPANEL TRUE
+
+    connectButton: {
+        backgroundColor: colors.primary,
+        padding: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    connectButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    panelDetailsContainer: {
+        padding: 15,
+        backgroundColor: '#f9f9f9',
+        borderRadius: 8,
+        marginVertical: 10,
+    },
+    panelText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    addButton: {
+        backgroundColor: colors.primary,
+        padding: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginVertical: 20,
+    },
+    addButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+
+    dataContainer: {
+        marginTop: 20,
+        padding: 15,
+        backgroundColor: '#f9f9f9',
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    dataTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: colors.primary || '#333',
+    },
+    dataText: {
+        fontSize: 16,
+        marginBottom: 5,
+        color: '#555',
+    },
+
+    
+
+    //SOLARPANEL FALSE
+
     // HEADER
 
 

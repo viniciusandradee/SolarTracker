@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         backgroundColor: '#F4F4F4',
-        color: colors.quinary,
+        color: colors.tertiary,
         fontSize: 16,
         paddingLeft: 20,
         borderRadius: 8,
